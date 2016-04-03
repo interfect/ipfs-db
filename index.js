@@ -332,10 +332,19 @@ app.post('/hash/add', urlencodedParser, function(req, res) {
 var db = new Database('database.json')
 db.load(() => {
 
-    var server = app.listen(8888, () => {
+    var server = app.listen(8888, '::1', () => {
 
       var host = server.address().address
       var port = server.address().port
+
+      console.log("Example app listening at http://[%s]:%s", host, port)
+
+    })
+    
+    var server4 = app.listen(8888, '127.0.0.1', () => {
+
+      var host = server4.address().address
+      var port = server4.address().port
 
       console.log("Example app listening at http://%s:%s", host, port)
 
