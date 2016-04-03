@@ -18,6 +18,13 @@ var bodyParser = require('body-parser')
 // We need Mustache templates
 var mustacheExpress = require('mustache-express')
 
+// We don't want to let people add too many hashes too fast and fill our
+// disk/ram
+var RateLimiter = require('limiter').RateLimiter
+
+// Make a limiter that just stops you if you try to go too fast
+var addLimiter = new RateLimiter(300, 'hour', true)
+
 // We have a database that lives in a JSON file
 
 // Make a new Database int he given filename. It may need to start with a ./ if
@@ -244,7 +251,7 @@ app.get('/:page', function(req, res) {
 // We can get tags
 app.get('/tags/:tag/:page', function(req, res) {
     
-    var tag = (req.params.tag || "").substring(0, 20).replace(/[^A-Za-z0-9]/g, '') || undefined
+    var tag = (req.params.tag || "").substring(0, 20).toLowerCase().replace(/[^a-z0-9]/g, '') || undefined
     var page = parseInt(req.params.page) || 0
 
     console.log("Got a GET request for tag " + tag + " page " + page)
@@ -297,7 +304,7 @@ app.post('/hash/add', urlencodedParser, function(req, res) {
         }
         fixedTags = []
         for(var i = 0; i < tags.length; i++) {
-            tags[i] = tags[i].replace(/[^A-Za-z0-9]/g, '')
+            tags[i] = tags[i].toLowerCase().replace(/[^a-z0-9]/g, '')
             if(tags[i].length == 0) {
                 continue
             }
@@ -311,11 +318,23 @@ app.post('/hash/add', urlencodedParser, function(req, res) {
             return fixedTags.indexOf(elem) == pos
         })
         
-        // Now put it in the database.
-        db.addHash(hash, "ipfs", name, fixedTags, () => {
-            // When it's in the database, call our callback with no error.
-            callback();
-        });
+        // Check the rate
+        addLimiter.removeTokens(1, (err, remaining) => {
+            if(err) throw err;
+            
+            if(remaining < 0) {
+                callback("Hash add limit reached");
+            } else {
+                // Now put it in the database.
+                db.addHash(hash, "ipfs", name, fixedTags, () => {
+                    // When it's in the database, call our callback with no error.
+                    callback();
+                });
+            }
+        
+        })
+        
+        
     }
     
     process((err) => {
