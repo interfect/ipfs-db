@@ -212,7 +212,7 @@ app.get('/', function(req, res) {
     db.getPage(0, (hashes) => {
         // Pass along the page of hash records to the templating engine
         res.render('index', {
-            site: "IPFS Hash Database",
+            site: "IPFS.rocks Hash Database",
             pageName: "Home",
             message: "Hello there!",
             hashes: hashes,
@@ -232,7 +232,7 @@ app.get('/:page', function(req, res) {
     db.getPage(page, (hashes) => {
         // Pass along the page of hash records to the templating engine
         res.render('index', {
-            site: "IPFS Hash Database",
+            site: "IPFS.rocks Hash Database",
             pageName: "Page " + (page + 1),
             hashes: hashes,
             prevPage: page > 0 ? (page - 1).toString() : false,
@@ -253,7 +253,7 @@ app.get('/tags/:tag/:page', function(req, res) {
     db.getPage(page, tag, (hashes) => {
         // Pass along the page of hash records to the templating engine
         res.render('index', {
-            site: "IPFS Hash Database",
+            site: "IPFS.rocks Hash Database",
             pageName: "#" + tag + " page " + (page + 1),
             hashes: hashes,
             prevPage: page > 0 ? (page - 1).toString() : false,
@@ -337,7 +337,7 @@ db.load(() => {
       var host = server.address().address
       var port = server.address().port
 
-      console.log("Example app listening at http://[%s]:%s", host, port)
+      console.log("Listening at http://[%s]:%s", host, port)
 
     })
     
@@ -346,7 +346,7 @@ db.load(() => {
       var host = server4.address().address
       var port = server4.address().port
 
-      console.log("Example app listening at http://%s:%s", host, port)
+      console.log("Listening at http://%s:%s", host, port)
 
     })
     
