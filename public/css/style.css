@@ -1,0 +1,37 @@
+div.listing {
+    display: table;
+}
+
+div.hash {
+    display: table-row;
+}
+
+div.property {
+    display: table-cell;
+    padding: 0.5em;
+}
+
+a.tag {
+    background: #f4f7b2;
+    padding: 3px;
+    text-decoration: none;
+    color: blue;
+}
+
+a.tag:hover {
+    text-decoration: underline;
+}
+
+div.title > a {
+    color: black;
+    text-decoration: none;
+}
+
+div.title > a:hover {
+    text-decoration: underline;
+}
+
+span.hash {
+    font-family: monospace;
+}
+

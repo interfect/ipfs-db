@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{#pageName}}{{.}} ⬣ {{/pageName}}{{site}}{{^site}}IPFS-DB{{/site}}</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+    </head>
+    <body>
+        <div class="title">
+            <a href="/"><h1>{{site}}{{^site}}IPFS-DB{{/site}}{{#pageName}}: {{.}}{{/pageName}}</h1></a>
+        </div>
+        {{#message}}<div class="message">{{.}}</div>{{/message}}
+        <div class="about">
+        
+            <p>This web site is a database of known IPFS hashes. You can browse
+            hashes by tag. You can also submit your own hashes</p>
+            
+        </div>
+        <div class="listing">
+            {{#hashes}}
+                <div class="hash">
+                    <div class="property"><span class="hash">{{hash}}</span></div>
+                    <div class="property"><a href="https://ipfs.io/{{type}}/{{hash}}" target="_blank"><span class="name">{{name}}</span></a></div>
+                    <div class="property">
+                    <span class="tags">
+                        {{#tags}}
+                            <a href="/tags/{{.}}/0" class="tag">#{{.}}</a>
+                        {{/tags}}
+                    </span></div>
+                </div>
+            {{/hashes}}
+        </div>
+        <div class="navigation">
+            {{#prevPage}}<a href="/{{.}}">&lt;Prev</a>{{/prevPage}}
+            {{#nextPage}}<a href="/{{.}}">Next&gt;</a>{{/nextPage}}
+        </div>
+        <div class="submit">
+            <h2>Submit a Hash</h2>
+            <form action="/hash/add" method=POST>
+                <input type="text" name="hash" placeholder="IPFS Hash">
+                <input type="text" name="name" placeholder="Object Name">
+                <input type="text" name="tags" placeholder="comma, separated, tags">
+                <input type="submit">
+            </form>
+        </div>
+    </body>
+</html>
