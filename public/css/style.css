@@ -35,3 +35,9 @@ span.hash {
     font-family: monospace;
 }
 
+div.footer {
+    color: grey;
+    margin: 2em;
+    margin-top: 5em;
+}
+
